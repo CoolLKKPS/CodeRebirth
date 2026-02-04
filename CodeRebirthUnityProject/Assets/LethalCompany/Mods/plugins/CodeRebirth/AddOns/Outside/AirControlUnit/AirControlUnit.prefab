@@ -48,8 +48,8 @@ MonoBehaviour:
   maxRange: 30
   minRange: 0
   requiresLineOfSight: 1
-  headerText: ACUnit
-  subText: For cooling purposes...
+  headerText: AC Unit
+  subText: Airspace Control
   scrapValue: 0
   creatureScanID: -1
   nodeType: 1

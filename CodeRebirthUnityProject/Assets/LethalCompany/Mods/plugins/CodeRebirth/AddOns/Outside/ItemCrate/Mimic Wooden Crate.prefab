@@ -837,8 +837,8 @@ MonoBehaviour:
   maxRange: 10
   minRange: 0
   requiresLineOfSight: 1
-  headerText: Wooden Crate (Dig out with a shovel)
-  subText: (Bash to open)
+  headerText: Wooden Crate
+  subText: Hit to open
   scrapValue: 0
   creatureScanID: -1
   nodeType: 0

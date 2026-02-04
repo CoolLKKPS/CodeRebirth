@@ -1434,7 +1434,7 @@ MonoBehaviour:
   minRange: 0
   requiresLineOfSight: 1
   headerText: G.R.E.G
-  subText: Advanced Control of the Airspace
+  subText: Advanced Airspace Control
   scrapValue: 0
   creatureScanID: -1
   nodeType: 1
@@ -1520,7 +1520,6 @@ MonoBehaviour:
   GregSource: {fileID: 5279458560248911520}
   FarGregSource: {fileID: 0}
   GregLockOnSound: {fileID: 8300000, guid: f5c51a9f164b21e4c9ce7a46d72e3abc, type: 3}
-  FarGregLockOnSound: {fileID: 0}
   GregFireSounds:
   - {fileID: 8300000, guid: 8e578a47f60ede040a909e65762a5f94, type: 3}
   - {fileID: 8300000, guid: 8e48f27a6d76df24ab8fcc3a2195ab3f, type: 3}

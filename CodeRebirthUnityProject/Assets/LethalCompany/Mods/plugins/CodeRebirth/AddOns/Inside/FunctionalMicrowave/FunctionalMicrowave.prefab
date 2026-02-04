@@ -868,8 +868,8 @@ MonoBehaviour:
   maxRange: 15
   minRange: 0
   requiresLineOfSight: 1
-  headerText: Microwave
-  subText: erm, what the sigma
+  headerText: Microwave Cart
+  subText: Heat based rock weakener
   scrapValue: 0
   creatureScanID: -1
   nodeType: 1

@@ -270,7 +270,7 @@ MonoBehaviour:
   minRange: 0
   requiresLineOfSight: 1
   headerText: Bear Trap
-  subText: Watch your steps...
+  subText: Capture Device
   scrapValue: 0
   creatureScanID: -1
   nodeType: 1
