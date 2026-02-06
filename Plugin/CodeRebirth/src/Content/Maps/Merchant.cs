@@ -21,13 +21,20 @@ public class Merchant : NetworkBehaviour
     [SerializeField]
     public List<Transform> merchantBarrelSpawns = new();
     [SerializeField]
-    public InteractTrigger RerollTrigger = null!;
+    public BugleBoy bugleBoy = null!;
+    [SerializeField]
+    public AnimationClip PurchaseAnimation = null!;
+    [SerializeField]
+    public AnimationClip StealAnimation = null!;
 
-    private System.Random storeSeededRandom = new();
+    internal System.Random storeSeededRandom = new();
     private Dictionary<GrabbableObject, int> itemsOnSale = new();
 
-    private static readonly int TakeCoinsAnimation = Animator.StringToHash("takeCoins"); // Trigger
-    private static readonly int Activated = Animator.StringToHash("activated"); // Bool
+    private static readonly int IdleRandomHash = Animator.StringToHash("idleRandom"); // Trigger
+    internal static readonly int RerollHash = Animator.StringToHash("reroll"); // Trigger
+    private static readonly int StealHash = Animator.StringToHash("steal"); // Trigger
+    private static readonly int PurchaseHash = Animator.StringToHash("purchase"); // Trigger
+    private static readonly int ActivatedHash = Animator.StringToHash("activated"); // Bool
 
     public void Start()
     {
@@ -40,12 +47,31 @@ public class Merchant : NetworkBehaviour
         PopulateItemsWithRarityList();
     }
 
-    public void RerollBarrels()
+    [ServerRpc(RequireOwnership = false)]
+    internal void RerollServerRpc()
     {
+        RerollClientRpc();
+    }
+
+    [ClientRpc]
+    private void RerollClientRpc()
+    {
+        bugleBoy.animator.SetBool(BugleBoy.ActivatedHash, true);
+        StartCoroutine(StopHisSinging());
+        merchantAnimator.SetTrigger(RerollHash);
+        MoneyCounter.Instance!.RemoveMoney(2);
         foreach (MerchantBarrel merchantBarrel in existingMerchantBarrels)
         {
             HandleSpawningMerchantItems(merchantBarrel);
         }
+    }
+
+    private IEnumerator StopHisSinging()
+    {
+        yield return new WaitUntil(() => !bugleBoy.bugleSource.isPlaying);
+        bugleBoy.chosenClip = bugleBoy.bugleClips[storeSeededRandom.Next(0, bugleBoy.bugleClips.Length)];
+        bugleBoy.rerollTrigger.cooldownTime = bugleBoy.chosenClip.length;
+        bugleBoy.animator.SetBool(BugleBoy.ActivatedHash, false);
     }
 
     private bool previouslyActivated = false;
@@ -66,7 +92,7 @@ public class Merchant : NetworkBehaviour
 
         if (playersNearby != previouslyActivated)
         {
-            merchantAnimator.SetBool(Activated, playersNearby);
+            merchantAnimator.SetBool(ActivatedHash, playersNearby);
         }
         previouslyActivated = playersNearby;
 
@@ -124,7 +150,7 @@ public class Merchant : NetworkBehaviour
 
     private IEnumerator PayUpBoy(int itemCost)
     {
-        MoneyCounter.Instance.RemoveMoney(itemCost);
+        MoneyCounter.Instance!.RemoveMoney(itemCost);
         foreach ((GrabbableObject grabbableObject, int price) in itemsOnSale)
         {
             SetupGrabbableTooltip(grabbableObject, price);
@@ -135,8 +161,8 @@ public class Merchant : NetworkBehaviour
             grabbableObject.grabbable = false;
         }
 
-        merchantAnimator.SetTrigger(TakeCoinsAnimation);
-        yield return new WaitForSeconds(10f);
+        merchantAnimator.SetTrigger(PurchaseHash);
+        yield return new WaitForSeconds(PurchaseAnimation.length);
         foreach (GrabbableObject grabbableObject in itemsOnSale.Keys)
         {
             grabbableObject.grabbable = true;
@@ -149,7 +175,10 @@ public class Merchant : NetworkBehaviour
         {
             grabbableObject.grabbable = false;
         }
-        RerollTrigger.interactable = false;
+
+        bugleBoy.DisableSelf();
+        merchantAnimator.SetTrigger(StealHash);
+        yield return new WaitForSeconds(StealAnimation.length);
         yield break;
     }
 
@@ -219,7 +248,7 @@ public class Merchant : NetworkBehaviour
         }
     }
 
-    private List<MerchantBarrel> existingMerchantBarrels = new();
+    internal List<MerchantBarrel> existingMerchantBarrels = new();
     public void HandleSpawningMerchantItems(MerchantBarrel merchantBarrel)
     {
         if (merchantBarrel.currentlySpawnedGrabbableObject != null)

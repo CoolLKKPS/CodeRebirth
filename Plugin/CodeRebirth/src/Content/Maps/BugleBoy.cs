@@ -1,0 +1,65 @@
+using System.Collections;
+using CodeRebirth.src.Content.Unlockables;
+using Dawn.Utils;
+using GameNetcodeStuff;
+using UnityEngine;
+
+namespace CodeRebirth.src.Content.Maps;
+
+public class BugleBoy : MonoBehaviour
+{
+    [SerializeField]
+    public Animator animator = null!;
+
+    [SerializeField]
+    public InteractTrigger rerollTrigger = null!;
+
+    [SerializeField]
+    public Merchant merchant = null!;
+
+    [SerializeField]
+    public AudioSource bugleSource = null!;
+
+    [SerializeField]
+    public AudioClip[] bugleClips = [];
+
+    internal AudioClip chosenClip = null!;
+    internal static readonly int ActivatedHash = Animator.StringToHash("MusicPlaying"); // Bool
+
+    public IEnumerator Start()
+    {
+        yield return null;
+        yield return null;
+        chosenClip = bugleClips[merchant.storeSeededRandom.Next(0, bugleClips.Length)];
+        rerollTrigger.cooldownTime = chosenClip.length;
+        rerollTrigger.onInteract.AddListener(Reroll);
+    }
+
+    public void Update()
+    {
+        if (MoneyCounter.Instance == null || MoneyCounter.Instance.MoneyStored() <= 2)
+        {
+            rerollTrigger.interactable = false;
+        }
+        else
+        {
+            rerollTrigger.interactable = true;
+        }
+    }
+
+    public void DisableSelf()
+    {
+        rerollTrigger.onInteract.RemoveListener(Reroll);
+        rerollTrigger.interactable = false;
+    }
+
+    public void Reroll(PlayerControllerB playerInteracting)
+    {
+        if (playerInteracting == null || !playerInteracting.IsLocalPlayer())
+        {
+            return;
+        }
+
+        merchant.RerollServerRpc();
+    }
+}

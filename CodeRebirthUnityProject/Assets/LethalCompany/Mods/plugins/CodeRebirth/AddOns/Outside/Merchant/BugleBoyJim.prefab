@@ -173,6 +173,7 @@ GameObject:
   - component: {fileID: 167903811359144648}
   - component: {fileID: 929968817754023566}
   - component: {fileID: 6119760405648046210}
+  - component: {fileID: 4953558635109631737}
   m_Layer: 0
   m_Name: BugleBoyJim
   m_TagString: Untagged
@@ -357,6 +358,24 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &4953558635109631737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2088169609647419955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -129442830, guid: 7172f1490231bfd4598274026d5a7332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 1686945758150698342}
+  rerollTrigger: {fileID: 544731330220067309}
+  merchant: {fileID: 0}
+  bugleSource: {fileID: 6119760405648046210}
+  bugleClips:
+  - {fileID: 8300000, guid: 6541bdde77dbe514895843b522ee80c9, type: 3}
 --- !u!1 &2547985436167338327
 GameObject:
   m_ObjectHideFlags: 0
@@ -788,7 +807,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2178604860
+  GlobalObjectIdHash: 1235432373
   InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
@@ -810,9 +829,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hoverIcon: {fileID: 21300000, guid: c21e491bb52d632499be14565cde4dce, type: 3}
-  hoverTip: Insert Coins
+  hoverTip: Insert Coins (2)
   disabledHoverIcon: {fileID: 0}
-  disabledHoverTip: Insufficient Coins
+  disabledHoverTip: Unable to reroll (Insufficient cash or shop closed)
   interactable: 1
   oneHandedItemAllowed: 1
   twoHandedItemAllowed: 1
@@ -837,7 +856,19 @@ MonoBehaviour:
       m_Calls: []
   onInteract:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4953558635109631737}
+        m_TargetAssemblyTypeName: CodeRebirth.src.Content.Maps.BugleBoy, CodeRebirth
+        m_MethodName: Reroll
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   onInteractEarly:
     m_PersistentCalls:
       m_Calls: []
