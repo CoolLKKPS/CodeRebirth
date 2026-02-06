@@ -206,6 +206,7 @@ public class Merchant : NetworkBehaviour
         for (int i = 0; i < merchantBarrelPrefabs.Count; i++)
         {
             MerchantBarrel realBarrel = GameObject.Instantiate(merchantBarrelPrefabs[i], merchantBarrelSpawns[i]);
+            realBarrel.GetComponent<NetworkObject>().Spawn(true);
             existingMerchantBarrels.Add(realBarrel);
             foreach (ItemWithRarityAndColor itemNamesWithRarityAndColor in realBarrel.itemNamesWithRarityAndColor)
             {
