@@ -6,9 +6,14 @@ using UnityEngine;
 namespace CodeRebirth.src.Content.Maps;
 public class MerchantBarrel : MonoBehaviour
 {
-    [SerializeField] public List<ItemWithRarityAndColor> itemNamesWithRarityAndColor = new();
-    public TextMeshPro textMeshPro = null!;
+    [SerializeField]
+    public List<ItemWithRarityAndColor> itemNamesWithRarityAndColor = new();
+    public TextMeshPro textMeshPro1 = null!;
+    public TextMeshPro textMeshPro2 = null!;
     public Transform barrelSpawnPoint = null!;
 
-    [HideInInspector] public List<(Item? item, float rarity, int minPrice, int maxPrice, Color borderColor, Color textColor)> validItemsWithRarityAndColor = new();
+    [HideInInspector]
+    public List<(Item? item, float rarity, int minPrice, int maxPrice, Color borderColor, Color textColor)> validItemsWithRarityAndColor = new();
+    [HideInInspector]
+    public GrabbableObject? currentlySpawnedGrabbableObject = null;
 }

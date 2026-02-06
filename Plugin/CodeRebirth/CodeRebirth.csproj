@@ -61,7 +61,7 @@
     <Reference Include="CullFactory" Private="False"><HintPath>../dlls/CullFactory.dll</HintPath></Reference>
     <Reference Include="OpenBodyCams" Private="False"><HintPath>../dlls/OpenBodyCams.dll</HintPath></Reference>
     <Reference Include="MMHOOK_Assembly-CSharp" Private="False"><HintPath>../dlls/MMHOOK_Assembly-CSharp.dll</HintPath></Reference>
-  </ItemGroup>  
+  </ItemGroup>
 
   <ItemGroup Condition="'$(TargetFramework.TrimEnd(`0123456789`))' == 'net'">
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.2" PrivateAssets="all" />
