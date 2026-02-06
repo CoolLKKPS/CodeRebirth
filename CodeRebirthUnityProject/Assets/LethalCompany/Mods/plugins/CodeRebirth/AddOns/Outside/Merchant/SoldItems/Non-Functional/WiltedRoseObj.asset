@@ -15,11 +15,11 @@ MonoBehaviour:
   itemId: 0
   itemName: Wilted Rose
   spawnPositionTypes: []
-  twoHanded: 0
+  twoHanded: 1
   twoHandedAnimation: 1
   disableHandsOnWall: 1
   canBeGrabbedBeforeGameStart: 1
-  weight: 1.02
+  weight: 1.04
   itemIsTrigger: 0
   holdButtonUse: 0
   itemSpawnsOnGround: 1
