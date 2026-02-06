@@ -523,6 +523,7 @@ MonoBehaviour:
   textMeshPro1: {fileID: 8190891965076389486}
   textMeshPro2: {fileID: 8474877015352499051}
   barrelSpawnPoint: {fileID: 774797627190368390}
+  currentlySpawnedGrabbableObject: {fileID: 0}
 --- !u!1 &5809431030126359633
 GameObject:
   m_ObjectHideFlags: 0
