@@ -1,4 +1,39 @@
-# v0.7.5
+# v0.7.11
+
+- Added to the Query implementation of DawnTerminalCommands.
+  - You can now run a DawnEvent after ending a query.
+  - You can now set a condition on the query for whether it should continue even after typing the continue keyword.
+- Interiors are now able to add extra scrap upon their generation.
+- Added ability to control gravity through DawnSurfaces.
+
+## v0.7.10
+
+- I said the dungeon stuff breaking wasn't DawnLib and then I woke up to a message showing it was, It's time I pull out the ukelele.
+
+## v0.7.9
+
+- Adjusted `BoundedRange` configs to take in a `min` and `max` value that aren't just integers but also floats.
+
+## v0.7.8
+
+- Reverted to old namespace system due to too many issues, Sorry but there's no support for if you register multiple items with the same name except they start with a different number.
+- Cleaned up some code, Added more safeguards around.
+- Terminal commands can now override other commands like vanilla commands (thanks to darmuh).
+- Organised Config ordering a little bit better so configs aren't generating in an unintuitive order.
+- Added a new default config to generate, `AllowEditingConfig`, at the top of each content type's config entries.
+  - This config is used to toggle whether the user is allowed to edit the config for that content type, or whether they follow the mod developer's defaults incase the developer updates the default configs.
+  - This config is defaulted to true if you have used DawnLib before, otherwise it's defaulted to false, and also defaults to false after you launch DawnLib more than once after version 0.7.8.
+- Added Mod Dev configurability for whether stuff like Unlockable cost should be configurable.
+
+## v0.7.7
+
+- Fixed an issue where the None weather simply doth not exist.
+
+## v0.7.6
+
+- Fixed a rare issue where a save's items would be seen in another save.
+
+## v0.7.5
 
 - Fixed multiplayer connection issues.
 - Fixed renaming terminal entries causing duplicates.
