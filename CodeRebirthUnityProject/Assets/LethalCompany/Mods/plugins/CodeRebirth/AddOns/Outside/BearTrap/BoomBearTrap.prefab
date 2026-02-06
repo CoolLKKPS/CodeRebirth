@@ -761,7 +761,7 @@ MonoBehaviour:
   minRange: 0
   requiresLineOfSight: 1
   headerText: Boom Trap
-  subText: Watch your steps...
+  subText: Exploding Device
   scrapValue: 0
   creatureScanID: -1
   nodeType: 1

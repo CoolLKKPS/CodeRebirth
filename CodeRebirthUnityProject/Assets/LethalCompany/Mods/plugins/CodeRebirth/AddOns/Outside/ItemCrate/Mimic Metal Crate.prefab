@@ -243,8 +243,8 @@ MonoBehaviour:
   maxRange: 10
   minRange: 0
   requiresLineOfSight: 1
-  headerText: Metal Safe (Dig out with a shovel)
-  subText: Use a key then hold [E]
+  headerText: Metal Safe
+  subText: Shovel and Key Required
   scrapValue: 0
   creatureScanID: -1
   nodeType: 0

@@ -847,7 +847,7 @@ Transform:
   m_GameObject: {fileID: 5371944578782068938}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.12, z: 0}
+  m_LocalPosition: {x: 0, y: 0.88, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -868,8 +868,8 @@ MonoBehaviour:
   maxRange: 15
   minRange: 0
   requiresLineOfSight: 1
-  headerText: Microwave
-  subText: erm, what the sigma
+  headerText: Microwave Cart
+  subText: Heat based rock weakener
   scrapValue: 0
   creatureScanID: -1
   nodeType: 1
@@ -888,7 +888,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
