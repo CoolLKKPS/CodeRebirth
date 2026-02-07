@@ -26,6 +26,8 @@ public class BugleBoy : MonoBehaviour
     internal AudioClip chosenClip = null!;
     internal static readonly int ActivatedHash = Animator.StringToHash("MusicPlaying"); // Bool
 
+    private bool disabled = false;
+
     public IEnumerator Start()
     {
         yield return null;
@@ -37,6 +39,11 @@ public class BugleBoy : MonoBehaviour
 
     public void Update()
     {
+        if (disabled)
+        {
+            return;
+        }
+
         if (MoneyCounter.Instance == null || MoneyCounter.Instance.MoneyStored() <= 2)
         {
             rerollTrigger.interactable = false;
@@ -51,6 +58,7 @@ public class BugleBoy : MonoBehaviour
     {
         rerollTrigger.onInteract.RemoveListener(Reroll);
         rerollTrigger.interactable = false;
+        disabled = true;
     }
 
     public void Reroll(PlayerControllerB playerInteracting)
