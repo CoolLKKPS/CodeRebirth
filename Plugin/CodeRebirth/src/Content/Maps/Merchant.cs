@@ -62,8 +62,26 @@ public class Merchant : NetworkBehaviour
         MoneyCounter.Instance!.RemoveMoney(2);
         foreach (MerchantBarrel merchantBarrel in existingMerchantBarrels)
         {
-            HandleSpawningMerchantItems(merchantBarrel);
+            if (merchantBarrel.currentlySpawnedGrabbableObject != null)
+            {
+                merchantBarrel.currentlySpawnedGrabbableObject.grabbable = false;
+            }
         }
+    }
+
+    public void DeleteItemsAtBarrel(int barrelRef)
+    {
+        MerchantBarrel merchantBarrel = existingMerchantBarrels[barrelRef];
+        if (merchantBarrel.currentlySpawnedGrabbableObject == null)
+            return;
+
+        merchantBarrel.currentlySpawnedGrabbableObject.NetworkObject.Despawn();
+    }
+
+    public void SpawnItemAtBarrel(int barrelRef)
+    {
+        MerchantBarrel merchantBarrel = existingMerchantBarrels[barrelRef];
+        HandleSpawningMerchantItems(merchantBarrel);
     }
 
     private IEnumerator StopHisSinging()
@@ -252,12 +270,6 @@ public class Merchant : NetworkBehaviour
     internal List<MerchantBarrel> existingMerchantBarrels = new();
     public void HandleSpawningMerchantItems(MerchantBarrel merchantBarrel)
     {
-        if (merchantBarrel.currentlySpawnedGrabbableObject != null)
-        {
-            merchantBarrel.currentlySpawnedGrabbableObject.grabbable = false;
-            merchantBarrel.currentlySpawnedGrabbableObject.NetworkObject.Despawn();
-        }
-
         Vector3 spawnPosition = merchantBarrel.barrelSpawnPoint.position;
 
         if (merchantBarrel.validItemsWithRarityAndColor == null || merchantBarrel.validItemsWithRarityAndColor.Count == 0)
