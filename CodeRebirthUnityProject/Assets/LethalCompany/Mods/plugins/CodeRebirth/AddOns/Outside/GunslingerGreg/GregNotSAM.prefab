@@ -546,6 +546,143 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4247180942410335277}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2388624814666261296
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8510127536656348321}
+  - component: {fileID: 9102041169657989857}
+  m_Layer: 0
+  m_Name: FarGregAudioSource
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8510127536656348321
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2388624814666261296}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.2312145, y: 0.16471481, z: -0.42410088}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8665214328365687117}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &9102041169657989857
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2388624814666261296}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 200
+  Pan2D: 0
+  rolloffMode: 2
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.15163727
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.15231629
+      value: 0.9083252
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &2453284787972468475
 GameObject:
   m_ObjectHideFlags: 0
@@ -1474,6 +1611,7 @@ Transform:
   - {fileID: 2683675997301127040}
   - {fileID: 2058153733678851915}
   - {fileID: 6151532084352051189}
+  - {fileID: 8510127536656348321}
   - {fileID: 8115038845558133657}
   - {fileID: 6113178217131384268}
   - {fileID: 1336218670288171393}
@@ -1518,13 +1656,16 @@ MonoBehaviour:
   fireRate: 0.5
   detectionRange: 200
   GregSource: {fileID: 5279458560248911520}
-  FarGregSource: {fileID: 0}
+  FarGregSource: {fileID: 9102041169657989857}
   GregLockOnSound: {fileID: 8300000, guid: f5c51a9f164b21e4c9ce7a46d72e3abc, type: 3}
   GregFireSounds:
   - {fileID: 8300000, guid: 8e578a47f60ede040a909e65762a5f94, type: 3}
   - {fileID: 8300000, guid: 8e48f27a6d76df24ab8fcc3a2195ab3f, type: 3}
   - {fileID: 8300000, guid: d62e7f41ba1f6cd43b55f80274d0ccc3, type: 3}
-  FarGregFireSounds: []
+  FarGregFireSounds:
+  - {fileID: 8300000, guid: 07d835d26d934f145af0d0e9c03b23b2, type: 3}
+  - {fileID: 8300000, guid: d54fb4b302fb3e549ad233a391d1bef1, type: 3}
+  - {fileID: 8300000, guid: 5c92f79d10f9d9343aea432d859d61e9, type: 3}
   DetectPlayerAudioSound: {fileID: 3895542236213157679}
   DetectPlayerFarAudioSound: {fileID: 2989197233804817874}
   playerHeadstart: 5
@@ -1716,7 +1857,7 @@ GameObject:
   - component: {fileID: 6151532084352051189}
   - component: {fileID: 2989197233804817874}
   m_Layer: 0
-  m_Name: FarGregAudioSource
+  m_Name: FarAlarmAudioSource
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
