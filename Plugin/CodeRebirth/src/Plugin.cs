@@ -9,6 +9,7 @@ using CodeRebirth.src.Patches;
 using BepInEx.Configuration;
 using Dusk;
 using Dawn;
+using CodeRebirth.src.Content.Maps;
 
 namespace CodeRebirth.src;
 [BepInPlugin(MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, MyPluginInfo.PLUGIN_VERSION)]
@@ -76,6 +77,7 @@ public class Plugin : BaseUnityPlugin
         TurretPatch.Init();
         SoccerBallPropPatch.Init();
         VehicleControllerPatch.Init();
+        MerchantTipPad.Init();
 
         // This should be ran before Network Prefabs are registered.
         InputActionsInstance = new IngameKeybinds();

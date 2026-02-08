@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Linq;
 using Dawn;
 using Dawn.Utils;
 using GameNetcodeStuff;
@@ -48,11 +49,55 @@ public class MoneyCounter : NetworkSingleton<MoneyCounter>, IHittable
     private Quaternion _tenBase;
     private Quaternion _oneBase;
 
-    private void Awake()
+    public override void OnNetworkSpawn()
     {
+        base.OnNetworkSpawn();
+        InitPatches();
         _hundredBase = HundredWheel.localRotation;
         _tenBase = TenWheel.localRotation;
         _oneBase = OneWheel.localRotation;
+    }
+
+    public override void OnNetworkDespawn()
+    {
+        base.OnNetworkDespawn();
+        RemovePatches();
+    }
+
+    private void InitPatches()
+    {
+        On.StartOfRound.AutoSaveShipData += SaveMoneyToContract;
+        On.HUDManager.ApplyPenalty += CalculateCoinPenalty;
+    }
+
+    private void RemovePatches()
+    {
+        On.StartOfRound.AutoSaveShipData -= SaveMoneyToContract;
+        On.HUDManager.ApplyPenalty -= CalculateCoinPenalty;
+    }
+
+    private void CalculateCoinPenalty(On.HUDManager.orig_ApplyPenalty orig, HUDManager self, int playersDead, int bodiesInsured)
+    {
+        orig(self, playersDead, bodiesInsured);
+        if (!NetworkManager.Singleton.IsServer || playersDead < StartOfRound.Instance.allPlayerScripts.Count(x => x.isPlayerControlled))
+        {
+            return;
+        }
+
+        Plugin.ExtendedLogging($"Applying 10 coin max penalty on all team wipe");
+        RemoveMoney(10);
+    }
+
+    private void SaveMoneyToContract(On.StartOfRound.orig_AutoSaveShipData orig, StartOfRound self)
+    {
+        orig(self);
+        if (!NetworkManager.Singleton.IsServer)
+        {
+            return;
+        }
+
+        Plugin.ExtendedLogging($"Saving money to contract: {_totalMoneyStored.Value}");
+        DawnLib.GetCurrentContract()?.Set(_moneyKey, _totalMoneyStored.Value);
     }
 
     public void AddMoney(int amount)
@@ -95,7 +140,11 @@ public class MoneyCounter : NetworkSingleton<MoneyCounter>, IHittable
 
     private void UpdateVisuals(int oldValue, int newValue)
     {
-        DawnLib.GetCurrentContract()?.Set(_moneyKey, _totalMoneyStored.Value);
+        if (StartOfRound.Instance.inShipPhase)
+        {
+            Plugin.ExtendedLogging($"Saving money to contract: {_totalMoneyStored.Value}");
+            DawnLib.GetCurrentContract()?.Set(_moneyKey, _totalMoneyStored.Value);
+        }
         UpdateVisualsClientRpc(oldValue, newValue);
     }
 

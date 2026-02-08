@@ -23,6 +23,8 @@ public class Merchant : NetworkBehaviour
     [SerializeField]
     public BugleBoy bugleBoy = null!;
     [SerializeField]
+    public MerchantTipPad tipPad = null!;
+    [SerializeField]
     public AnimationClip PurchaseAnimation = null!;
     [SerializeField]
     public AnimationClip StealAnimation = null!;
@@ -195,6 +197,7 @@ public class Merchant : NetworkBehaviour
         }
 
         bugleBoy.DisableSelf();
+        tipPad.CloseDonations();
         merchantAnimator.SetTrigger(StealHash);
         yield return new WaitForSeconds(StealAnimation.length);
         yield break;
