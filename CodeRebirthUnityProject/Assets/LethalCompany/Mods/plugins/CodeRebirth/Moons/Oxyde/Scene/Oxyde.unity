@@ -2538,7 +2538,7 @@ MonoBehaviour:
     invertFade: 0
     distanceFadeStart: 100
     distanceFadeEnd: 500
-    textureOffset: {x: -686.082, y: -0, z: -0}
+    textureOffset: {x: -166.7899, y: -0, z: -0}
     falloffMode: 0
     maskMode: 0
     materialMask: {fileID: 0}
@@ -11356,7 +11356,7 @@ MonoBehaviour:
     invertFade: 0
     distanceFadeStart: 300
     distanceFadeEnd: 500
-    textureOffset: {x: -411.6492, y: -0, z: -0}
+    textureOffset: {x: -100.073944, y: -0, z: -0}
     falloffMode: 1
     maskMode: 0
     materialMask: {fileID: 0}
@@ -23917,6 +23917,16 @@ PrefabInstance:
       propertyPath: GlobalObjectIdHash
       value: 309043059
       objectReference: {fileID: 0}
+    - target: {fileID: 613807178499025097, guid: d0ceccc0fe1c44d429ec5a7053532a6e,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 934939307
+      objectReference: {fileID: 0}
+    - target: {fileID: 1239787560482727698, guid: d0ceccc0fe1c44d429ec5a7053532a6e,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1745794546
+      objectReference: {fileID: 0}
     - target: {fileID: 2245122648277115870, guid: d0ceccc0fe1c44d429ec5a7053532a6e,
         type: 3}
       propertyPath: _screenShakeTargets.Array.data[0]
@@ -23927,6 +23937,11 @@ PrefabInstance:
       propertyPath: overridePlayerParent
       value: 
       objectReference: {fileID: 1991192134}
+    - target: {fileID: 2886290975310224078, guid: d0ceccc0fe1c44d429ec5a7053532a6e,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 1842974497
+      objectReference: {fileID: 0}
     - target: {fileID: 2930116566415988962, guid: d0ceccc0fe1c44d429ec5a7053532a6e,
         type: 3}
       propertyPath: GlobalObjectIdHash
@@ -23937,6 +23952,11 @@ PrefabInstance:
       propertyPath: overridePlayerParent
       value: 
       objectReference: {fileID: 1991192134}
+    - target: {fileID: 4478589649756457072, guid: d0ceccc0fe1c44d429ec5a7053532a6e,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3336042478
+      objectReference: {fileID: 0}
     - target: {fileID: 4648469477059554915, guid: d0ceccc0fe1c44d429ec5a7053532a6e,
         type: 3}
       propertyPath: m_Name
@@ -23951,6 +23971,11 @@ PrefabInstance:
         type: 3}
       propertyPath: GlobalObjectIdHash
       value: 3961294411
+      objectReference: {fileID: 0}
+    - target: {fileID: 6271991150448165479, guid: d0ceccc0fe1c44d429ec5a7053532a6e,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 3942937989
       objectReference: {fileID: 0}
     - target: {fileID: 7071544595146402373, guid: d0ceccc0fe1c44d429ec5a7053532a6e,
         type: 3}
@@ -24016,6 +24041,11 @@ PrefabInstance:
         type: 3}
       propertyPath: GlobalObjectIdHash
       value: 2515636962
+      objectReference: {fileID: 0}
+    - target: {fileID: 9213609356424607972, guid: d0ceccc0fe1c44d429ec5a7053532a6e,
+        type: 3}
+      propertyPath: GlobalObjectIdHash
+      value: 903552331
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
