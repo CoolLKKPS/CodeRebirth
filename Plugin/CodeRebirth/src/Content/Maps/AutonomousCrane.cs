@@ -389,18 +389,13 @@ public class AutonomousCrane : NetworkBehaviour
                     continue;
 
                 _playerKillList.Add(player);
-                if (IsServer)
-                {
-                    NetworkObjectReference flattenedBodyNetObjRef = CodeRebirthUtils.Instance.SpawnScrap(LethalContent.Items[CodeRebirthItemKeys.FlattenedBody].Item, player.transform.position, false, true, 0);
-                    if (flattenedBodyNetObjRef.TryGet(out NetworkObject flattenedBodyNetObj))
-                    {
-                        flattenedBodyNetObj.GetComponent<FlattenedBody>()._flattenedBodyName = player;
-                    }
-                }
             }
             else if (hittable is EnemyAICollisionDetect enemy)
             {
                 if (_enemyKillList.Contains(enemy.mainScript))
+                    continue;
+
+                if (Physics.Linecast(magnetTargetPosition, enemy.mainScript.transform.position, StartOfRound.Instance.collidersAndRoomMaskAndDefault, QueryTriggerInteraction.Ignore))
                     continue;
 
                 _enemyKillList.Add(enemy.mainScript);
@@ -431,6 +426,24 @@ public class AutonomousCrane : NetworkBehaviour
             return;
 
         player.KillPlayer(player.velocityLastFrame, true, CauseOfDeath.Crushing, 0, default);
+
+        if (!player.IsLocalPlayer())
+        {
+            return;
+        }
+
+        SpawnScrapOnServerRpc(playerToDie);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SpawnScrapOnServerRpc(PlayerControllerReference playerToDie)
+    {
+        PlayerControllerB player = playerToDie;
+        NetworkObjectReference flattenedBodyNetObjRef = CodeRebirthUtils.Instance.SpawnScrap(LethalContent.Items[CodeRebirthItemKeys.FlattenedBody].Item, player.transform.position, false, true, 0);
+        if (flattenedBodyNetObjRef.TryGet(out NetworkObject flattenedBodyNetObj))
+        {
+            flattenedBodyNetObj.GetComponent<FlattenedBody>()._flattenedBodyName = player;
+        }
     }
 
     private List<PlayerControllerB> _playerKillList = new();

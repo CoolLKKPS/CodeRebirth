@@ -2,7 +2,6 @@ using CodeRebirth.src.Content.Enemies;
 using CodeRebirth.src.Content.Items;
 using CodeRebirth.src.Util;
 using Dawn;
-using Dusk;
 using Dawn.Utils;
 using GameNetcodeStuff;
 using System.Collections;
@@ -47,7 +46,7 @@ static class EnemyAIPatch
             if (UnityEngine.Random.Range(0f, 100f) >= coinChance)
                 return;
 
-            if (!LethalContent.MapObjects.TryGetValue(CodeRebirthMapObjectKeys.Money, out DawnMapObjectInfo mapObjectInfo))
+            if (!LethalContent.MapObjects.TryGetValue(CodeRebirthMapObjectKeys.Coin, out DawnMapObjectInfo mapObjectInfo))
                 return;
 
             GameObject coin = UnityEngine.Object.Instantiate(mapObjectInfo.MapObject, self.transform.position, Quaternion.identity, RoundManager.Instance.mapPropsContainer.transform);

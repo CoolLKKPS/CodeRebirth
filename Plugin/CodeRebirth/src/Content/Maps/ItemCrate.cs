@@ -11,8 +11,8 @@ using System;
 using System.Collections;
 using CodeRebirth.src.Content.Enemies;
 using Dusk;
-using Dawn.Internal;
 using Dawn;
+using UnityEngine.Events;
 
 namespace CodeRebirth.src.Content.Maps;
 public class ItemCrate : CRHittable
@@ -21,8 +21,13 @@ public class ItemCrate : CRHittable
     public string keyHoverTip = "Open : [LMB]";
 
     [Header("Audio")]
+    public AudioSource burningAudio = null!;
     public AudioSource? slowlyOpeningSFX = null;
     public AudioSource openSFX = null!;
+
+    public UnityEvent onBurn = new();
+    public UnityEvent postBurn = new();
+    public bool despawnOnPostBurn = false;
 
     public InteractTrigger? trigger = null!;
     public Pickable? pickable = null!;
@@ -112,6 +117,11 @@ public class ItemCrate : CRHittable
 
     private void Update()
     {
+        if (burned)
+        {
+            return;
+        }
+
         if ((crateType != CrateType.Metal && crateType != CrateType.MetalMimic) || trigger == null || pickable == null)
         {
             return;
@@ -310,9 +320,77 @@ public class ItemCrate : CRHittable
         Plugin.ExtendedLogging("Crate health: " + health);
     }
 
+    private bool burned = false;
+    private static readonly int BurningHash = Animator.StringToHash("burning"); // Bool
+
+    [ServerRpc(RequireOwnership = false)]
+    private void DoBurningServerRpc()
+    {
+        int randomMimicScrapToSpawn = crateRandom.Next(0, 3);
+        DoBurningClientRpc(randomMimicScrapToSpawn);
+        SetNewDigProgressClientRpc(1);
+    }
+
+    [ClientRpc]
+    private void DoBurningClientRpc(int randomMimicScrapToSpawn)
+    {
+        StartCoroutine(DoBurningLocal(randomMimicScrapToSpawn));
+    }
+
+    private IEnumerator DoBurningLocal(int randomMimicScrapToSpawn)
+    {
+        burned = true;
+        animator.SetBool(BurningHash, true);
+        onBurn.Invoke();
+        yield return new WaitForSeconds(12f);
+        animator.SetBool(BurningHash, false);
+
+        if (crateType == CrateType.MetalMimic || crateType == CrateType.WoodenMimic)
+        {
+            NamespacedKey<DawnItemInfo> burnedScrapToSpawn = CodeRebirthItemKeys.BurntFleshArm;
+            switch (randomMimicScrapToSpawn)
+            {
+                case 0:
+                    burnedScrapToSpawn = CodeRebirthItemKeys.BurntFleshArm;
+                    break;
+                case 1:
+                    burnedScrapToSpawn = CodeRebirthItemKeys.BurntFleshEye;
+                    break;
+                case 2:
+                    burnedScrapToSpawn = CodeRebirthItemKeys.BurntFleshTeeth;
+                    break;
+                case 3:
+                    burnedScrapToSpawn = CodeRebirthItemKeys.BurntFleshTongue;
+                    break;
+            }
+
+            CodeRebirthUtils.Instance.SpawnScrap(LethalContent.Items[burnedScrapToSpawn].Item, transform.position + Vector3.up + Vector3.right * crateRandom.NextFloat(-0.25f, 0.25f) + Vector3.forward * crateRandom.NextFloat(-0.25f, 0.25f), false, true, 0);
+        }
+        else
+        {
+            CodeRebirthUtils.Instance.SpawnScrap(LethalContent.Items[CodeRebirthItemKeys.BurntRubble].Item, transform.position + Vector3.up + Vector3.right * crateRandom.NextFloat(-0.25f, 0.25f) + Vector3.forward * crateRandom.NextFloat(-0.25f, 0.25f), false, true, 0);
+        }
+        postBurn.Invoke();
+
+        if (despawnOnPostBurn && IsServer)
+        {
+            NetworkObject.Despawn();
+        }
+    }
+
     public override bool Hit(int force, Vector3 hitDirection, PlayerControllerB? playerWhoHit = null, bool playHitSFX = false, int hitID = -1)
     {
-        if (opened || playerWhoHit == null) return false;
+        if (opened || playerWhoHit == null || burned)
+        {
+            return false;
+        }
+
+        if (hitID == 745737)
+        {
+            burned = true;
+            DoBurningServerRpc();
+            return true;
+        }
 
         bool shovelOnly = false;
         if (crateType == CrateType.Metal || crateType == CrateType.MetalMimic)

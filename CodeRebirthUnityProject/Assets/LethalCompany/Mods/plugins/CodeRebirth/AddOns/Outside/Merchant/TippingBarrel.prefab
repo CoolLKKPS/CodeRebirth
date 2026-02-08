@@ -788,6 +788,10 @@ MonoBehaviour:
   m_Script: {fileID: 1893121510, guid: 7172f1490231bfd4598274026d5a7332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <TipTriggers>k__BackingField:
+  - {fileID: 3196486140535268385}
+  - {fileID: 3264810108220925703}
+  - {fileID: 4836574661586181929}
 --- !u!1 &5454941117078413458
 GameObject:
   m_ObjectHideFlags: 0
