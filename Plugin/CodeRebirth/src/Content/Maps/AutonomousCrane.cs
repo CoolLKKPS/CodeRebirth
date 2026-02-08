@@ -21,6 +21,8 @@ public class AutonomousCrane : NetworkBehaviour
     [SerializeField]
     private AudioSource _audioSource = null!;
     [SerializeField]
+    private AudioClip _craneStopMovingSound = null!;
+    [SerializeField]
     private AudioClip _craneTurningSound = null!;
     [SerializeField]
     private AudioClip _magnetDroppingSound = null!;
@@ -104,7 +106,9 @@ public class AutonomousCrane : NetworkBehaviour
         {
             collider.enabled = false;
         }
+
         yield return new WaitUntil(() => StartOfRound.Instance.shipHasLanded || !GameNetworkManager.Instance.localPlayerController.isInHangarShipRoom);
+
         foreach (Collider collider in _colliders)
         {
             collider.enabled = true;
@@ -206,7 +210,7 @@ public class AutonomousCrane : NetworkBehaviour
     {
         if (_targetPlayer == null)
         {
-            DisableAudioSourceServerRpc();
+            DisableAudioSourceServerRpc(true);
             _currentState = CraneState.Idle;
             return;
         }
@@ -220,7 +224,7 @@ public class AutonomousCrane : NetworkBehaviour
     {
         if (_targetPlayer == null)
         {
-            DisableAudioSourceServerRpc();
+            DisableAudioSourceServerRpc(true);
             _currentState = CraneState.Idle;
             return;
         }
@@ -239,7 +243,7 @@ public class AutonomousCrane : NetworkBehaviour
     {
         if (_targetPlayer == null)
         {
-            DisableAudioSourceServerRpc();
+            DisableAudioSourceServerRpc(true);
             _currentState = CraneState.Idle;
             return;
         }
@@ -259,7 +263,7 @@ public class AutonomousCrane : NetworkBehaviour
             return;
         }
 
-        DisableAudioSourceServerRpc();
+        DisableAudioSourceServerRpc(false);
         ChangeAudioSourceClipServerRpc(1);
         _targetPlayer = null;
         _currentState = CraneState.DropMagnet;
@@ -353,7 +357,7 @@ public class AutonomousCrane : NetworkBehaviour
             if (_magnetMovingProgress >= 1f)
             {
                 _magnetMovingProgress = 1f;
-                DisableAudioSourceServerRpc();
+                DisableAudioSourceServerRpc(false);
                 _magnetState = MagnetState.IdleTop;
                 _currentState = CraneState.Idle;
             }
@@ -481,21 +485,25 @@ public class AutonomousCrane : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void DisableAudioSourceServerRpc()
+    private void DisableAudioSourceServerRpc(bool stopping)
     {
-        DisableAudioSourceClientRpc();
+        DisableAudioSourceClientRpc(stopping);
     }
 
     [ClientRpc]
-    private void DisableAudioSourceClientRpc()
+    private void DisableAudioSourceClientRpc(bool stopping)
     {
-        DisableAudioSource();
+        DisableAudioSource(stopping);
     }
 
-    private void DisableAudioSource()
+    private void DisableAudioSource(bool stopping)
     {
         _audioSource.clip = null;
         _audioSource.Stop();
+        if (stopping)
+        {
+            _audioSource.PlayOneShot(_craneStopMovingSound);
+        }
     }
 
     [ServerRpc]
@@ -512,7 +520,7 @@ public class AutonomousCrane : NetworkBehaviour
 
     private void ChangeAudioSourceClip(int soundID)
     {
-        DisableAudioSource();
+        DisableAudioSource(false);
 
         switch (soundID)
         {
