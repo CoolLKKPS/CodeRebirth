@@ -21,7 +21,6 @@ public class ItemCrate : CRHittable
     public string keyHoverTip = "Open : [LMB]";
 
     [Header("Audio")]
-    public AudioSource burningAudio = null!;
     public AudioSource? slowlyOpeningSFX = null;
     public AudioSource openSFX = null!;
 
@@ -115,10 +114,19 @@ public class ItemCrate : CRHittable
         Plugin.ExtendedLogging($"ItemCrate was hit! New digProgress: {newValue}");
     }
 
+    private float damageBurningTicks = 0.5f;
     private void Update()
     {
         if (burned)
         {
+            if (isBurning && damageBurningTicks <= 0)
+            {
+                damageBurningTicks = 0.5f;
+                if (Vector3.Distance(transform.position, GameNetworkManager.Instance.localPlayerController.transform.position) < 5f)
+                {
+                    GameNetworkManager.Instance.localPlayerController.DamagePlayer(5, true, true, CauseOfDeath.Burning, 6, false, default);
+                }
+            }
             return;
         }
 
@@ -321,6 +329,7 @@ public class ItemCrate : CRHittable
     }
 
     private bool burned = false;
+    private bool isBurning = false;
     private static readonly int BurningHash = Animator.StringToHash("burning"); // Bool
 
     [ServerRpc(RequireOwnership = false)]
@@ -340,6 +349,7 @@ public class ItemCrate : CRHittable
     private IEnumerator DoBurningLocal(int randomMimicScrapToSpawn)
     {
         burned = true;
+        isBurning = true;
         animator.SetBool(BurningHash, true);
         onBurn.Invoke();
         yield return new WaitForSeconds(12f);
@@ -370,12 +380,8 @@ public class ItemCrate : CRHittable
         {
             CodeRebirthUtils.Instance.SpawnScrap(LethalContent.Items[CodeRebirthItemKeys.BurntRubble].Item, transform.position + Vector3.up + Vector3.right * crateRandom.NextFloat(-0.25f, 0.25f) + Vector3.forward * crateRandom.NextFloat(-0.25f, 0.25f), false, true, 0);
         }
+        isBurning = false;
         postBurn.Invoke();
-
-        if (despawnOnPostBurn && IsServer)
-        {
-            NetworkObject.Despawn();
-        }
     }
 
     public override bool Hit(int force, Vector3 hitDirection, PlayerControllerB? playerWhoHit = null, bool playHitSFX = false, int hitID = -1)
