@@ -57,6 +57,8 @@
 - Adjusted the pads like credit pads, ship upgrades and furniture unlockers to have an animation on use.
 - Cleaned up a bunch of code.
 - Fixed the issue of the ship boundary being expanded allowing more items to be easily collected with coderebirth installed.
+- Revamped mimic crates and gave interactions with explosions and fire based weapons.
+- Merchant completely revamped with a donation system, a reroll, new store layout ish, and a new way of paying money, more ways to not accidently steal and now a new punishment for stealing.
 
 ## v1.4.2
 
