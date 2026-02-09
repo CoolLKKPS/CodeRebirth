@@ -251,7 +251,7 @@ public class Merchant : NetworkBehaviour
                     Plugin.ExtendedLogging($"Merchant item max price: {maxPrice}");
                     Plugin.ExtendedLogging($"Merchant item border color: {borderColor}");
                     Plugin.ExtendedLogging($"Merchant item text color: {textColor}");
-                    realBarrel.validItemsWithRarityAndColor.Add((null, rarity, minPrice, maxPrice, borderColor, textColor));
+                    realBarrel.validItemsWithRarityAndColor.Add(new RealItemWithRarityAndColor(null, rarity, minPrice, maxPrice, borderColor, textColor));
                 }
                 else if (itemsByName.TryGetValue(normalizedName, out Item matchingItem))
                 {
@@ -262,7 +262,7 @@ public class Merchant : NetworkBehaviour
                     Plugin.ExtendedLogging($"Merchant item border color: {borderColor}");
                     Plugin.ExtendedLogging($"Merchant item text color: {textColor}");
                     Plugin.ExtendedLogging($"Comparable item: {matchingItem.itemName}\n");
-                    realBarrel.validItemsWithRarityAndColor.Add((matchingItem, rarity, minPrice, maxPrice, borderColor, textColor));
+                    realBarrel.validItemsWithRarityAndColor.Add(new RealItemWithRarityAndColor(matchingItem, rarity, minPrice, maxPrice, borderColor, textColor));
                 }
             }
 
@@ -281,33 +281,19 @@ public class Merchant : NetworkBehaviour
             return;
         }
 
-        Item? selectedItem = CRUtilities.ChooseRandomWeightedType(merchantBarrel.validItemsWithRarityAndColor.Select(x => (x.item, x.rarity)));
-        int _price = 0;
-        Color _borderColor = Color.white;
-        Color _textColor = Color.white;
-        foreach (var (item, rarity, minPrice, maxprice, borderColor, textColor) in merchantBarrel.validItemsWithRarityAndColor)
-        {
-            if (selectedItem != item)
-                continue;
+        RealItemWithRarityAndColor selectedItem = CRUtilities.ChooseRandomWeightedType(merchantBarrel.validItemsWithRarityAndColor.Select(x => (x, x.rarity)))!;
 
-            selectedItem = item;
-            _price = storeSeededRandom.Next(minPrice, maxprice + 1);
-            _borderColor = borderColor;
-            _textColor = textColor;
-            break;
-        }
-
-        if (selectedItem == null)
+        if (selectedItem.item == null)
         {
             Plugin.ExtendedLogging("Item selection failed for barrel at " + spawnPosition + "Assuming Random item");
             Item item = GetRandomVanillaItem(false, storeSeededRandom);
-            selectedItem = item;
+            selectedItem.item = item;
         }
 
         // Spawn the selected item.
-        GameObject itemGO = (GameObject)CodeRebirthUtils.Instance.SpawnScrap(selectedItem, spawnPosition, false, true, 0);
+        GameObject itemGO = (GameObject)CodeRebirthUtils.Instance.SpawnScrap(selectedItem.item, spawnPosition, false, true, 0);
         GrabbableObject grabbableObject = itemGO.GetComponent<GrabbableObject>();
-        SyncGrabbableObjectScanStuffServerRpc(new NetworkBehaviourReference(grabbableObject), existingMerchantBarrels.IndexOf(merchantBarrel), _price, _borderColor.r, _borderColor.g, _borderColor.b, _textColor.r, _textColor.g, _textColor.b);
+        SyncGrabbableObjectScanStuffServerRpc(new NetworkBehaviourReference(grabbableObject), existingMerchantBarrels.IndexOf(merchantBarrel), UnityEngine.Random.Range(selectedItem.minPrice, selectedItem.maxPrice + 1), selectedItem.borderColor.r, selectedItem.borderColor.g, selectedItem.borderColor.b, selectedItem.textColor.r, selectedItem.textColor.g, selectedItem.textColor.b);
     }
 
     public static Item GetRandomVanillaItem(bool excludeShopItems, System.Random? storeSeededRandom = null)
