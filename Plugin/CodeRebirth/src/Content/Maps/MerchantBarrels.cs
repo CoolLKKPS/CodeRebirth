@@ -13,7 +13,7 @@ public class MerchantBarrel : MonoBehaviour
     public Transform barrelSpawnPoint = null!;
 
     [HideInInspector]
-    public List<(Item? item, float rarity, int minPrice, int maxPrice, Color borderColor, Color textColor)> validItemsWithRarityAndColor = new();
+    public List<RealItemWithRarityAndColor> validItemsWithRarityAndColor = new();
     [HideInInspector]
     public GrabbableObject? currentlySpawnedGrabbableObject = null;
 }
